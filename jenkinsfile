@@ -1,0 +1,22 @@
+pipeline{
+    agent {label 'tomcat'}
+    stages{       
+       stage('Build Stage'){
+            steps{
+                sh 'mvn clean install'
+            }
+         }
+        stage('SonarQube Analysis Stage') {
+            steps{
+                withSonarQubeEnv('sonarQube') { 
+                    sh "mvn clean verify sonar:sonar -Dsonar.projectKey=sonar-sonar"
+                }
+            }
+        }
+        stage('Deploy'){
+            steps{
+                sh 'sudo cp /home/ec2-user/workspace/multibranch-job_master/target/MyWebApp-master.war /opt/tomcat/webapps'
+            }
+         }
+    }
+}

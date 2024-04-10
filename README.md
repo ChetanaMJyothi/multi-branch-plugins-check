@@ -1,1 +1,1 @@
-# multi-branch-plugins-check
+# sonarqube-example.
